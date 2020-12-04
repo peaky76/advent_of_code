@@ -1,35 +1,60 @@
+import re
+
 file = open("data.txt", "r")
 passports = [[]]
 
 for line in file:
-    if line != '\n':
+    line = line.rstrip('\n')
+    if line:
         #Add details to current passport
         passports[len(passports) - 1].extend(line.split(' '))    
     else:
         #Start a new passport
         passports.append([])
 
-def get_keys(passport):        
-    return [credential.split(':')[0] for credential in passport]
+# PART ONE
+def get_details(passport):        
+    return dict([credential.split(':') for credential in passport])
 
 def valid_passport(passport):
-    return sorted(get_keys(passport)) == sorted(['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid', 'cid'])
+    return all(key in get_details(passport).keys() for key in ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid', 'cid'])
 
 def valid_np_cred(passport):
-    return sorted(get_keys(passport)) == sorted(['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid'])
+    return all(key in get_details(passport).keys() for key in ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid'])
+
+print(sum([valid_passport(p) or valid_np_cred(p) for p in passports]))    
+
+#PART TWO
+def valid_byr(passport):
+    return 1920 <= int(get_details(passport)['byr']) <= 2002
+
+def valid_iyr(passport):
+    return 2010 <= int(get_details(passport)['iyr']) <= 2020
+
+def valid_eyr(passport):
+    return 2020 <= int(get_details(passport)['eyr']) <= 2030
+
+def valid_hgt(passport):
+    hgt = get_details(passport)['hgt']
+    if re.match(r'\d+',hgt):
+        if re.search(r'cm', hgt):
+            return hgt[:-2].isnumeric() and 150 <= int(hgt[:-2]) <= 193
+        if re.search(r'in', hgt):
+            return hgt[:-2].isnumeric() and 59 <= int(hgt[:-2]) <= 76
+    return False
+
+def valid_hcl(passport):
+    return bool(re.match(r'#[0-9a-f]{6}', get_details(passport)['hcl'])) 
+
+def valid_ecl(passport):
+    return get_details(passport)['ecl'] in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
+
+def valid_pid(passport):
+    pid = get_details(passport)['pid']
+    return bool(re.fullmatch(r'[0-9]{9}', pid))    
         
-print(sum([valid_passport(p) or valid_np_cred(p) for p in passports ]))    
+def all_creds_valid(passport):
+    funcs = [valid_byr, valid_iyr, valid_eyr, valid_hgt, valid_hcl, valid_ecl, valid_pid]
+    return all([func(passport) for func in funcs])
 
-
-#VALIDATION RULES
-
-# byr (Birth Year) - four digits; at least 1920 and at most 2002.
-# iyr (Issue Year) - four digits; at least 2010 and at most 2020.
-# eyr (Expiration Year) - four digits; at least 2020 and at most 2030.
-# hgt (Height) - a number followed by either cm or in:
-# If cm, the number must be at least 150 and at most 193.
-# If in, the number must be at least 59 and at most 76.
-# hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.
-# ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
-# pid (Passport ID) - a nine-digit number, including leading zeroes.
-# cid (Country ID) - ignored, missing or not.
+print(sum([(valid_passport(p) or valid_np_cred(p)) and all_creds_valid(p) for p in passports]))  
