@@ -14,19 +14,12 @@ for line in file:
 def any_answer_yes_count(group):
     return len(set(''.join(group)))
 
+answer = sum(any_answer_yes_count(group) for group in groups)
+print(answer)
+
 #PART TWO
 def all_answer_yes_count(group):
     return len([answer for answer in set(''.join(group)) if all(answer in person for person in group)])
 
-plane_sum = 0
-for group in groups:
-    plane_sum += any_answer_yes_count(group)
-    
-print(plane_sum)
-
-#PART TWO
-plane_sum = 0
-for group in groups:
-    plane_sum += all_answer_yes_count(group)
-    
-print(plane_sum)
+answer = sum(all_answer_yes_count(group) for group in groups)
+print(answer)
