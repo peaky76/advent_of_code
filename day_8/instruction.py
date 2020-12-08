@@ -5,16 +5,16 @@ class Instruction():
         self.arg = arg
         self.is_active = False
       
-    def enact_instruction(self, acc):
+    def get_increment(self):
         self.is_active = True
         if self.op == "acc":
-            return acc + self.arg
+            return self.arg
         else:
-            return acc
+            return 0
           
-    def get_next_instruction(self, current_pos):
+    def get_next_move(self):
         if self.op == "jmp":
-            return current_pos + self.arg
+            return self.arg
         else:
-            return current_pos + 1
+            return 1
             

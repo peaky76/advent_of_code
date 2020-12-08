@@ -13,8 +13,8 @@ curr_idx = 0
 acc = 0
     
 while not hit_infinite_loop:
-    acc = instructions[curr_idx].enact_instruction(acc)
-    curr_idx = instructions[curr_idx].get_next_instruction(curr_idx)
+    acc += instructions[curr_idx].get_increment()
+    curr_idx += instructions[curr_idx].get_next_move()
     hit_infinite_loop = instructions[curr_idx].is_active
     
 print(acc)    
