@@ -3,7 +3,6 @@ class Instruction():
     def __init__(self, op, arg):
         self.op = op
         self.arg = arg
-        self.is_active = False
         
     def __repr__(self):
         return self.op + ' ' + str(self.arg)
