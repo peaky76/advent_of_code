@@ -4,6 +4,9 @@ class Instruction():
         self.op = op
         self.arg = arg
         self.is_active = False
+        
+    def __repr__(self):
+        return self.op + ' ' + str(self.arg)
       
     def get_increment(self):
         self.is_active = True
