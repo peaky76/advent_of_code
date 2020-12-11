@@ -3,6 +3,9 @@ class SeatSpace():
     def __init__(self, code):
         self.code = code
         
+    def __str__(self):
+        return self.code
+        
     def is_empty(self):
         return self.code == 'L'
     
@@ -14,8 +17,8 @@ class SeatSpace():
     
     def occupy(self):
         if self.code == 'L':
-            self.code == '#'
+            self.code = '#'
             
-    def unoccupy(self):
+    def empty(self):
         if self.code == '#':
-            self.code == 'L'
+            self.code = 'L'
