@@ -23,13 +23,13 @@ def get_manhattan_distance(start_move, instructions, waypoint=False):
                 change_to_position = curr_move.apply(amount)
             else:
                 if waypoint:
-                    for i in range(amount):
-                        curr_move.modify(Movement.specify(command))
-                    change_to_position = {'eastwards': 0, 'northwards': 0}
+                    curr_move.modify(Movement.specify(command).apply(amount))
+                    change_to_position = None
                 else:
-                    change_to_position = Movement.specify(command).apply(amount)            
-            eastness += change_to_position['eastwards']
-            northness += change_to_position['northwards']
+                    change_to_position = Movement.specify(command).apply(amount)
+            if change_to_position:            
+                eastness += change_to_position.eastwards
+                northness += change_to_position.northwards
 
     return abs(eastness) + abs(northness)    
 

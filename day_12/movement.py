@@ -23,6 +23,5 @@ class Movement():
                 self.eastwards, self.northwards = -self.northwards, self.eastwards
                
     def apply(self, num_of_moves=1):
-        return {'eastwards': self.eastwards * num_of_moves,
-                'northwards': self.northwards * num_of_moves}
+        return Movement(self.eastwards * num_of_moves, self.northwards * num_of_moves)
     
