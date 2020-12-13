@@ -9,7 +9,7 @@ all_buses = [bus for bus in lines[1].rstrip('\n').split(',')]
 named_buses = [int(bus) for bus in all_buses if bus != 'x']
 
 def next_arrival_time(bus, curr_time):
-    return (curr_time // bus + 1) * bus
+    return (curr_time // bus + 1) * buss
 
 def get_recurring_pattern(bus_a, bus_b):
     spacing = bus_a[0] * bus_b[0]
@@ -33,4 +33,3 @@ time_offsets = [i for i, bus in enumerate(all_buses) if bus != 'x']
 buses_and_offsets = sorted(list(zip(named_buses, time_offsets)), reverse=True)
 result = reduce(get_recurring_pattern, buses_and_offsets)
 print(result[0] - result[1])
-
